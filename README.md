@@ -104,6 +104,7 @@ WARNING: All illegal access operations will be denied in a future release
 - This failure *does not* happen with Java 8.
 - This failure *does not* happen with agent version 7.1.1, even on Java 11+. Versions 7.2.0 and later *do* fail.
 - This failure *does not* happen with Scala 2.13. It *does* happen with Scala 2.12 and 2.11 (not that I expect New Relic to support the long-unmaintained 2.11).
+- Although this test project uses the AkkaHttp 10.1 series (10.1.15), the same problem happens with the latest release, AkkaHttp 10.2.9.
 
 Under Scala 2.13 with Java 11, the warnings about illegal reflective access are still present but the IllegalAccessError does not happen:
 
