@@ -104,3 +104,81 @@ WARNING: All illegal access operations will be denied in a future release
 - This failure *does not* happen with Java 8.
 - This failure *does not* happen with agent version 7.1.1, even on Java 11+. Versions 7.2.0 and later *do* fail.
 - This failure *does not* happen with Scala 2.13. It *does* happen with Scala 2.12 and 2.11 (not that I expect New Relic to support the long-unmaintained 2.11).
+
+Under Scala 2.13 with Java 11, the warnings about illegal reflective access are still present but the IllegalAccessError does not happen:
+
+```
+~/akka-http-new-relic % sbt test      
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by com.newrelic.weave.weavepackage.NewClassAppender (file:/Users/mernst/akka-http-new-relic/newrelic-agent-7.6.0.jar) to method java.net.URLClassLoader.addURL(java.net.URL)
+WARNING: Please consider reporting this to the maintainers of com.newrelic.weave.weavepackage.NewClassAppender
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+2022-05-04T09:25:22,320-0700 [60109 1] com.newrelic INFO: Configuration file not found. The agent will attempt to read required values from environment variables.
+2022-05-04T09:25:22,336-0700 [60109 1] com.newrelic INFO: Using default collector host: collector.newrelic.com
+2022-05-04T09:25:22,336-0700 [60109 1] com.newrelic INFO: Using default metric ingest URI: https://metric-api.newrelic.com/metric/v1
+2022-05-04T09:25:22,336-0700 [60109 1] com.newrelic INFO: Using default event ingest URI: https://insights-collector.newrelic.com/v1/accounts/events
+2022-05-04T09:25:22,378-0700 [60109 1] com.newrelic INFO: New Relic Agent: Writing to log file: /Users/mernst/akka-http-new-relic/logs/newrelic_agent.log
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by com.newrelic.weave.weavepackage.NewClassAppender (file:/Users/mernst/akka-http-new-relic/newrelic-agent-7.6.0.jar) to method java.net.URLClassLoader.addURL(java.net.URL)
+WARNING: Please consider reporting this to the maintainers of com.newrelic.weave.weavepackage.NewClassAppender
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+[info] welcome to sbt 1.6.2 (AdoptOpenJDK Java 11.0.11)
+[info] loading settings for project global-plugins from credentials.sbt,plugins.sbt ...
+[info] loading global plugins from /Users/mernst/.sbt/1.0/plugins
+[info] loading project definition from /Users/mernst/akka-http-new-relic/project
+[info] loading settings for project root from build.sbt ...
+[info] set current project to akka-http-new-relic (in build file:/Users/mernst/akka-http-new-relic/)
+[info] VersionResourceSpec:
+[info] versionRoute
+[info] - should return appVersion for a get request
+[info] Run completed in 1 second, 777 milliseconds.
+[info] Total number of tests run: 1
+[info] Suites: completed 1, aborted 0
+[info] Tests: succeeded 1, failed 0, canceled 0, ignored 0, pending 0
+[info] All tests passed.
+[success] Total time: 4 s, completed May 3, 2022, 9:25:32 AM
+```
+
+Under Scala 2.13 with Java 17, there is no IllegalAccessError *and* the warnings about illegal reflective access are gone (though there are new "Sharing is only supported for boot loader classes because bootstrap classpath has been appended" warnings):
+
+```
+~/akka-http-new-relic % sbt test      
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+2022-05-04T09:28:06,201-0700 [60305 1] com.newrelic INFO: Configuration file not found. The agent will attempt to read required values from environment variables.
+2022-05-04T09:28:06,215-0700 [60305 1] com.newrelic INFO: Using default collector host: collector.newrelic.com
+2022-05-04T09:28:06,215-0700 [60305 1] com.newrelic INFO: Using default metric ingest URI: https://metric-api.newrelic.com/metric/v1
+2022-05-04T09:28:06,215-0700 [60305 1] com.newrelic INFO: Using default event ingest URI: https://insights-collector.newrelic.com/v1/accounts/events
+2022-05-04T09:28:06,254-0700 [60305 1] com.newrelic INFO: New Relic Agent: Writing to log file: /Users/mernst/akka-http-new-relic/logs/newrelic_agent.log
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+[info] welcome to sbt 1.6.2 (Eclipse Adoptium Java 17.0.2)
+[info] loading settings for project global-plugins from credentials.sbt,plugins.sbt ...
+[info] loading global plugins from /Users/mernst/.sbt/1.0/plugins
+[info] loading project definition from /Users/mernst/akka-http-new-relic/project
+[info] loading settings for project root from build.sbt ...
+[info] set current project to akka-http-new-relic (in build file:/Users/mernst/akka-http-new-relic/)
+[info] VersionResourceSpec:
+[info] versionRoute
+[info] - should return appVersion for a get request
+[info] Run completed in 1 second, 590 milliseconds.
+[info] Total number of tests run: 1
+[info] Suites: completed 1, aborted 0
+[info] Tests: succeeded 1, failed 0, canceled 0, ignored 0, pending 0
+[info] All tests passed.
+[success] Total time: 4 s, completed May 4, 2022, 9:28:16 AM
+```
