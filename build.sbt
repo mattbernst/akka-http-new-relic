@@ -4,7 +4,7 @@ ThisBuild / scalaVersion := "2.12.15"
 
 lazy val root = (project in file("."))
   .settings(
-    name := "akka-new-relic-example"
+    name := "akka-http-new-relic"
   )
 
 libraryDependencies ++= Seq(
